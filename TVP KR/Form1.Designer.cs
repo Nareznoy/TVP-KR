@@ -38,12 +38,13 @@
       this.btnRemovePosition = new System.Windows.Forms.Button();
       this.button2 = new System.Windows.Forms.Button();
       this.btnAddEdge = new System.Windows.Forms.Button();
-      this.btnCreatePTNet = new System.Windows.Forms.Button();
       this.lblTransitionInfo = new System.Windows.Forms.Label();
       this.btnClear = new System.Windows.Forms.Button();
       this.btnSimulate = new System.Windows.Forms.Button();
       this.btnRemoveTransition = new System.Windows.Forms.Button();
       this.btnDoStep = new System.Windows.Forms.Button();
+      this.btnExport = new System.Windows.Forms.Button();
+      this.btnImport = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPetriNet)).BeginInit();
       this.SuspendLayout();
       // 
@@ -132,7 +133,7 @@
       // 
       // button2
       // 
-      this.button2.Location = new System.Drawing.Point(890, 331);
+      this.button2.Location = new System.Drawing.Point(869, 256);
       this.button2.Name = "button2";
       this.button2.Size = new System.Drawing.Size(111, 23);
       this.button2.TabIndex = 8;
@@ -150,16 +151,6 @@
       this.btnAddEdge.UseVisualStyleBackColor = true;
       this.btnAddEdge.Click += new System.EventHandler(this.btnAddEdge_Click);
       // 
-      // btnCreatePTNet
-      // 
-      this.btnCreatePTNet.Location = new System.Drawing.Point(869, 261);
-      this.btnCreatePTNet.Name = "btnCreatePTNet";
-      this.btnCreatePTNet.Size = new System.Drawing.Size(111, 23);
-      this.btnCreatePTNet.TabIndex = 10;
-      this.btnCreatePTNet.Text = "Create Petri Net";
-      this.btnCreatePTNet.UseVisualStyleBackColor = true;
-      this.btnCreatePTNet.Click += new System.EventHandler(this.btnCreatePTNet_Click);
-      // 
       // lblTransitionInfo
       // 
       this.lblTransitionInfo.AutoSize = true;
@@ -170,9 +161,9 @@
       // 
       // btnClear
       // 
-      this.btnClear.Location = new System.Drawing.Point(949, 390);
+      this.btnClear.Location = new System.Drawing.Point(869, 556);
       this.btnClear.Name = "btnClear";
-      this.btnClear.Size = new System.Drawing.Size(75, 23);
+      this.btnClear.Size = new System.Drawing.Size(111, 23);
       this.btnClear.TabIndex = 12;
       this.btnClear.Text = "Clear";
       this.btnClear.UseVisualStyleBackColor = true;
@@ -180,9 +171,9 @@
       // 
       // btnSimulate
       // 
-      this.btnSimulate.Location = new System.Drawing.Point(890, 462);
+      this.btnSimulate.Location = new System.Drawing.Point(869, 303);
       this.btnSimulate.Name = "btnSimulate";
-      this.btnSimulate.Size = new System.Drawing.Size(75, 23);
+      this.btnSimulate.Size = new System.Drawing.Size(111, 23);
       this.btnSimulate.TabIndex = 13;
       this.btnSimulate.Text = "Simulate";
       this.btnSimulate.UseVisualStyleBackColor = true;
@@ -200,25 +191,46 @@
       // 
       // btnDoStep
       // 
-      this.btnDoStep.Location = new System.Drawing.Point(890, 491);
+      this.btnDoStep.Location = new System.Drawing.Point(869, 332);
       this.btnDoStep.Name = "btnDoStep";
-      this.btnDoStep.Size = new System.Drawing.Size(75, 23);
+      this.btnDoStep.Size = new System.Drawing.Size(111, 23);
       this.btnDoStep.TabIndex = 15;
       this.btnDoStep.Text = "Do Step";
       this.btnDoStep.UseVisualStyleBackColor = true;
       this.btnDoStep.Click += new System.EventHandler(this.btnDoStep_Click);
       // 
+      // btnExport
+      // 
+      this.btnExport.Location = new System.Drawing.Point(869, 432);
+      this.btnExport.Name = "btnExport";
+      this.btnExport.Size = new System.Drawing.Size(75, 23);
+      this.btnExport.TabIndex = 16;
+      this.btnExport.Text = "Export";
+      this.btnExport.UseVisualStyleBackColor = true;
+      this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+      // 
+      // btnImport
+      // 
+      this.btnImport.Location = new System.Drawing.Point(950, 432);
+      this.btnImport.Name = "btnImport";
+      this.btnImport.Size = new System.Drawing.Size(75, 23);
+      this.btnImport.TabIndex = 17;
+      this.btnImport.Text = "Import";
+      this.btnImport.UseVisualStyleBackColor = true;
+      this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1112, 591);
+      this.ClientSize = new System.Drawing.Size(1058, 591);
+      this.Controls.Add(this.btnImport);
+      this.Controls.Add(this.btnExport);
       this.Controls.Add(this.btnDoStep);
       this.Controls.Add(this.btnRemoveTransition);
       this.Controls.Add(this.btnSimulate);
       this.Controls.Add(this.btnClear);
       this.Controls.Add(this.lblTransitionInfo);
-      this.Controls.Add(this.btnCreatePTNet);
       this.Controls.Add(this.btnAddEdge);
       this.Controls.Add(this.button2);
       this.Controls.Add(this.btnRemovePosition);
@@ -249,12 +261,13 @@
     private System.Windows.Forms.Button btnRemovePosition;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.Button btnAddEdge;
-    private System.Windows.Forms.Button btnCreatePTNet;
     private System.Windows.Forms.Label lblTransitionInfo;
     private System.Windows.Forms.Button btnClear;
     private System.Windows.Forms.Button btnSimulate;
     private System.Windows.Forms.Button btnRemoveTransition;
     private System.Windows.Forms.Button btnDoStep;
+    private System.Windows.Forms.Button btnExport;
+    private System.Windows.Forms.Button btnImport;
   }
 }
 

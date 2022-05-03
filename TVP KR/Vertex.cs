@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace TVP_KR
 {
+  [Serializable]
   internal class Vertex
   {
     private int _vertexRadius = 20;
     private int _positionRadius = 5;
     
-    private Pen _vertexPen = new Pen(Color.Black, 2);
-    private Pen _activeVertexPen = new Pen(Color.Red, 3);
-    private Brush _vertexBrush = Brushes.Black;
-    private Brush _positionBrush = Brushes.Red;
+    
     private String _namePrefix = "P";
 
     private String _name;
@@ -36,6 +34,11 @@ namespace TVP_KR
 
     public void drawVertex(Graphics img, bool isActive = false)
     {
+      Pen _vertexPen = new Pen(Color.Black, 2);
+      Pen _activeVertexPen = new Pen(Color.Red, 3);
+      Brush _vertexBrush = Brushes.Black;
+      
+
       Pen currentPen = isActive ? _activeVertexPen : _vertexPen;
 
       GraphicsExtensions.DrawCircle(img, currentPen, vertexCenter.X, vertexCenter.Y, _vertexRadius);
@@ -46,6 +49,8 @@ namespace TVP_KR
 
     public void drawPositions(Graphics img)
     {
+      Brush _positionBrush = Brushes.Red;
+
       if (positionsCount != 0)
       {
         for (int i = 0; i < positionsCount; ++i)

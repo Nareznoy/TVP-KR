@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace TVP_KR
 {
+  [Serializable]
   internal class PetriNet
   {
     public List<Vertex> vertices { get; set; }
     public List<Transition> transitions { get; set; }
 
-    private int _currentActiveTransitionIndex = 0;
+    private int _currentActiveTransitionIndex = 1;
 
     public PetriNet()
     {

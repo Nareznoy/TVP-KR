@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ namespace TVP_KR
 
   public partial class Form1 : Form
   {
+    private const String SERIALIZIBLE_FILE_NAME = "SeverinGraph.dat";
+
     private DrawMode currentDrawMode = DrawMode.None;
     private bool _isVerticalTransition = false;
 
@@ -158,7 +162,7 @@ namespace TVP_KR
       switch (currentDrawMode)
       {
         case DrawMode.AddVertex:
-          Vertex newVertex = new Vertex(e.Location, _vertexCount++);
+          Vertex newVertex = new Vertex(e.Location, ++_vertexCount);
           //_vertices.Add(newVertex);
           //newVertex.drawVertex(img);
           ptNet.addVertex(newVertex);
@@ -258,11 +262,6 @@ namespace TVP_KR
       ptNet.drawPetriNet(img);
     }
 
-    private void btnCreatePTNet_Click(object sender, EventArgs e)
-    {
-
-    }
-
     private void radBtnHorizontal_CheckedChanged(object sender, EventArgs e)
     {
       _isVerticalTransition = !radBtnHorizontal.Checked;
@@ -295,6 +294,29 @@ namespace TVP_KR
       int acitveTransition = ptNet.doStep();
       reDrawPTNet();
       ptNet.transitions[acitveTransition].drawTransition(img, true);
+    }
+
+    private void btnExport_Click(object sender, EventArgs e)
+    {
+      // создаем объект BinaryFormatter
+      BinaryFormatter formatter = new BinaryFormatter();
+      // получаем поток, куда будем записывать сериализованный объект
+      using (FileStream fs = new FileStream(SERIALIZIBLE_FILE_NAME, FileMode.OpenOrCreate))
+      {
+        formatter.Serialize(fs, ptNet);
+      }
+    }
+
+    private void btnImport_Click(object sender, EventArgs e)
+    {
+      // создаем объект BinaryFormatter
+      BinaryFormatter formatter = new BinaryFormatter();
+      // десериализация из файла people.dat
+      using (FileStream fs = new FileStream(SERIALIZIBLE_FILE_NAME, FileMode.OpenOrCreate))
+      {
+        ptNet = (PetriNet)formatter.Deserialize(fs);
+        reDrawPTNet();
+      }
     }
   }
 }
