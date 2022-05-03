@@ -27,7 +27,7 @@ namespace TVP_KR
 
   public partial class Form1 : Form
   {
-    private const String SERIALIZIBLE_FILE_NAME = "SeverinGraph.dat";
+    private const String SERIALIZIBLE_FILE_NAME = "DrozdovGraph.dat";
 
     private DrawMode currentDrawMode = DrawMode.None;
     private bool _isVerticalTransition = false;

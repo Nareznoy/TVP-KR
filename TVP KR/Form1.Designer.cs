@@ -53,7 +53,7 @@
       this.pictureBoxPetriNet.BackColor = System.Drawing.SystemColors.Window;
       this.pictureBoxPetriNet.Location = new System.Drawing.Point(12, 12);
       this.pictureBoxPetriNet.Name = "pictureBoxPetriNet";
-      this.pictureBoxPetriNet.Size = new System.Drawing.Size(851, 567);
+      this.pictureBoxPetriNet.Size = new System.Drawing.Size(851, 666);
       this.pictureBoxPetriNet.TabIndex = 0;
       this.pictureBoxPetriNet.TabStop = false;
       this.pictureBoxPetriNet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxPetriNet_MouseClick);
@@ -223,7 +223,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1058, 591);
+      this.ClientSize = new System.Drawing.Size(1058, 690);
       this.Controls.Add(this.btnImport);
       this.Controls.Add(this.btnExport);
       this.Controls.Add(this.btnDoStep);

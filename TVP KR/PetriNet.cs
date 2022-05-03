@@ -100,6 +100,8 @@ namespace TVP_KR
       
       if (_currentActiveTransitionIndex < transitions.Count - 1)
       {
+        Random rnd = new Random();
+        //_currentActiveTransitionIndex = rnd.Next(0, transitions.Count - 1);
         _currentActiveTransitionIndex++;
       }
       else
