@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace TVP_KR
     AddVertex,
     RemoveVertex,
     AddTransition,
+    RemoveTransition,
     AddPosition,
     RemovePosition,
     AddEdge,
@@ -29,8 +31,9 @@ namespace TVP_KR
     Graphics img;
     private int _vertexCount = 0;
 
-    private List<Vertex> _vertices = new List<Vertex>();
-    private List<Transition> _transitions = new List<Transition>();
+    //private List<Vertex> _vertices = new List<Vertex>();
+    //private List<Transition> _transitions = new List<Transition>();
+    private PetriNet ptNet;
 
     private Vertex _firstSelectedVertex;
     private Vertex _secondSelectedVertex;
@@ -40,6 +43,8 @@ namespace TVP_KR
     {
       InitializeComponent();
       img = pictureBoxPetriNet.CreateGraphics();
+
+      ptNet = new PetriNet();
     }
 
     public void switchDrawMode(DrawMode newDrawMode)
@@ -54,6 +59,9 @@ namespace TVP_KR
           break;
         case DrawMode.AddTransition:
           btnAddTransition.Enabled = false;
+          break;
+        case DrawMode.RemoveTransition:
+          btnRemoveTransition.Enabled = false;
           break;
         case DrawMode.AddPosition:
           btnAddPosition.Enabled = false;
@@ -79,6 +87,9 @@ namespace TVP_KR
           case DrawMode.AddTransition:
             btnAddTransition.Enabled = true;
             break;
+          case DrawMode.RemoveTransition:
+            btnRemoveTransition.Enabled = true;
+            break;
           case DrawMode.AddPosition:
             btnAddPosition.Enabled = true;
             break;
@@ -89,9 +100,11 @@ namespace TVP_KR
             btnAddEdge.Enabled = true;
             break;
           case DrawMode.None:
-            btnAddPosition.Enabled = true;
-            btnRemoveVertex.Enabled = true;
             btnAddVertex.Enabled = true;
+            btnRemoveVertex.Enabled = true;
+            btnAddTransition.Enabled = true;
+            btnRemoveTransition.Enabled = true;
+            btnAddPosition.Enabled = true;
             btnRemovePosition.Enabled = true;
             btnAddEdge.Enabled = true;
             break;
@@ -113,6 +126,11 @@ namespace TVP_KR
     private void btnAddTransition_Click(object sender, EventArgs e)
     {
       switchDrawMode(DrawMode.AddTransition);
+    }
+
+    private void btnRemoveTransition_Click(object sender, EventArgs e)
+    {
+      switchDrawMode(DrawMode.RemoveTransition);
     }
 
     private void btnAddPosition_Click(object sender, EventArgs e)
@@ -141,25 +159,44 @@ namespace TVP_KR
       {
         case DrawMode.AddVertex:
           Vertex newVertex = new Vertex(e.Location, _vertexCount++);
-          _vertices.Add(newVertex);
-          newVertex.drawVertex(img);
+          //_vertices.Add(newVertex);
+          //newVertex.drawVertex(img);
+          ptNet.addVertex(newVertex);
+          ptNet.drawPetriNet(img);
           break;
         case DrawMode.RemoveVertex:
+          Vertex vertexToRemove = ptNet.getVertexByPoint(e.Location);
+          ptNet.removeVertex(vertexToRemove);
+          ptNet.drawPetriNet(img);
           break;
         case DrawMode.AddTransition:
           Transition newTransition = new Transition(e.Location);
-          _transitions.Add(newTransition);
+          //_transitions.Add(newTransition);
           newTransition.isVertical = _isVerticalTransition;
-          newTransition.drawTransition(img);
+          //newTransition.drawTransition(img);
+          ptNet.addTransition(newTransition);
+          ptNet.drawPetriNet(img);
+          break;
+        case DrawMode.RemoveTransition:
+          Transition transitionToRemove = ptNet.getTransitionByPoint(e.Location);
+          ptNet.removeTransition(transitionToRemove);
+          ptNet.drawPetriNet(img);
           break;
         case DrawMode.AddPosition:
+          Vertex vertexToAddPositions = ptNet.getVertexByPoint(e.Location);
+          if (vertexToAddPositions != null)
+          {
+            vertexToAddPositions.addPosition();
+            reDrawPTNet();
+          }
           break;
         case DrawMode.RemovePosition:
+
           break;
         case DrawMode.AddEdge:
           if (_firstSelectedVertex == null)
           {
-            Vertex currentSelectedVertex = getVertexByPoint(e.Location);
+            Vertex currentSelectedVertex = ptNet.getVertexByPoint(e.Location);
             if (currentSelectedVertex == null)
             {
               lblTransitionInfo.Text = "Select first vertex";
@@ -174,7 +211,7 @@ namespace TVP_KR
 
           if (_selectedTransition == null)
           {
-            Transition currentSelectedTransition = getTransitionByPoint(e.Location);
+            Transition currentSelectedTransition = ptNet.getTransitionByPoint(e.Location);
             if (currentSelectedTransition == null)
             {
               lblTransitionInfo.Text = "Select transition";
@@ -189,7 +226,7 @@ namespace TVP_KR
 
           if (_secondSelectedVertex == null)
           {
-            Vertex currentSelectedVertex = getVertexByPoint(e.Location);
+            Vertex currentSelectedVertex = ptNet.getVertexByPoint(e.Location);
             if (currentSelectedVertex == null)
             {
               lblTransitionInfo.Text = "Select second vertex";
@@ -199,7 +236,8 @@ namespace TVP_KR
               _secondSelectedVertex = currentSelectedVertex;
 
               _selectedTransition.addEdge(_firstSelectedVertex, _secondSelectedVertex);
-              _selectedTransition.drawTransition(img);
+              //_selectedTransition.drawTransition(img);
+              reDrawPTNet();
 
               _firstSelectedVertex = null;
               _secondSelectedVertex = null;
@@ -211,28 +249,13 @@ namespace TVP_KR
       }
     }
 
-    private Vertex getVertexByPoint(Point p)
+    private void reDrawPTNet()
     {
-      foreach (Vertex vertex in _vertices)
-      {
-        if (vertex.isPointInside(p))
-        {
-          return vertex;
-        }
-      }
-      return null;
-    }
+      img = pictureBoxPetriNet.CreateGraphics();
+      img.Clear(Color.White);
 
-    private Transition getTransitionByPoint(Point p)
-    {
-      foreach (Transition transition in _transitions)
-      {
-        if (transition.isPointInside(p))
-        {
-          return transition;
-        }
-      }
-      return null;
+      //ptNet = new PetriNet(_vertices, _transitions);
+      ptNet.drawPetriNet(img);
     }
 
     private void btnCreatePTNet_Click(object sender, EventArgs e)
@@ -243,6 +266,35 @@ namespace TVP_KR
     private void radBtnHorizontal_CheckedChanged(object sender, EventArgs e)
     {
       _isVerticalTransition = !radBtnHorizontal.Checked;
+    }
+
+    private void btnClear_Click(object sender, EventArgs e)
+    {
+      reDrawPTNet();
+    }
+
+    private void btnSimulate_Click(object sender, EventArgs e)
+    {
+      if (ptNet == null)
+      {
+        return;
+      }
+
+      while (true)
+      {
+        int acitveTransition = ptNet.doStep();
+        reDrawPTNet();
+        ptNet.transitions[acitveTransition].drawTransition(img, true);
+
+        Thread.Sleep(500);
+      }
+    }
+
+    private void btnDoStep_Click(object sender, EventArgs e)
+    {
+      int acitveTransition = ptNet.doStep();
+      reDrawPTNet();
+      ptNet.transitions[acitveTransition].drawTransition(img, true);
     }
   }
 }

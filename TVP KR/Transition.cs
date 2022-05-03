@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,19 +12,17 @@ namespace TVP_KR
   internal class Transition
   {
     private int _transitionWidth = 50;
-    private int _curveHeight = 10;
     private Pen _edgePen = new Pen(Color.Black, 2);
-    private Pen _transtitionPen = new Pen(Color.Black, 2);
-    private Pen _activeTranstitionPen = new Pen(Color.Green, 2);
+    private Pen _blackTranstitionPen = new Pen(Color.Black, 2);
+    private Pen _redTranstitionPen = new Pen(Color.Red, 3);
     AdjustableArrowCap _arrowCap = new AdjustableArrowCap(10, 10, true);
 
-    //private List<Vertex> _startVertices = new List<Vertex>();
-    //private List<Vertex> _endVertices = new List<Vertex>();
-
-    private List<Edge> _edgeList = new List<Edge>();
+    private List<Vertex> _startVertices = new List<Vertex>();
+    private List<Vertex> _endVertices = new List<Vertex>();
 
     private Point _transitionCenter = new Point();
     public bool isVertical { get; set; } = false;
+    public bool isActive { get; set; } = false;
 
     public Transition(Point transitionCenter)
     {
@@ -36,268 +35,129 @@ namespace TVP_KR
       _edgePen.CustomEndCap = _arrowCap;
     }
 
-    //public Transition(Point transitionCenter, IEnumerable<Vertex> startVertices, IEnumerable<Vertex> endVertices)
-    //{
-    //  foreach (Vertex startVertex in startVertices)
-    //  {
-    //    this._startVertices.Add(startVertex);
-    //  }
-
-    //  foreach (Vertex endVertex in endVertices)
-    //  {
-    //    if (endVertex != null)
-    //    {
-    //      this._endVertices.Add(endVertex);
-    //    }
-    //  }
-
-    //  this._transitionCenter = transitionCenter;
-    //}
-
     public void addEdge(Vertex startVertex, Vertex endVertex)
     {
-      _edgeList.Add(new Edge(startVertex, endVertex));
-      //_startVertices.Add(startVertex);
-      //_endVertices.Add(endVertex);
+      if (!_startVertices.Contains(startVertex))
+      {
+        _startVertices.Add(startVertex);
+      }
+      if (!_endVertices.Contains(endVertex))
+      {
+        _endVertices.Add(endVertex);
+      }
     }
 
-    public bool doTransition()
+    public bool tryDoTransition()
     {
-      //if (isTransitionPossible())
-      //{
-      //  foreach (Vertex startVertex in this._startVertices)
-      //  {
-      //    startVertex.positionsCount--;
-      //  }
-      //  foreach (Vertex endVertex in this._endVertices)
-      //  {
-      //    endVertex.positionsCount++;
-      //  }
-      //}
+      if (isTransitionPossible())
+      {
+        foreach (Vertex startVertex in this._startVertices)
+        {
+          startVertex.positionsCount--;
+        }
+        foreach (Vertex endVertex in this._endVertices)
+        {
+          endVertex.positionsCount++;
+        }
+      }
 
       return false;
     }
 
-    public void drawTransition(Graphics img, bool isActive = false)
+    public void drawTransition(Graphics img, bool isSelected = false)
     {
-      Pen curentPen = isActive ? _activeTranstitionPen : _transtitionPen;
+      Pen curentPen = isSelected || isActive ? _redTranstitionPen : _blackTranstitionPen;
 
-      int widthDiff = this._transitionWidth / 2;
+      int halfWidth = this._transitionWidth / 2;
       if (!this.isVertical)
       {
         img.DrawLine(curentPen
-          , _transitionCenter.X - widthDiff
+          , _transitionCenter.X - halfWidth
           , _transitionCenter.Y
-          , _transitionCenter.X + widthDiff
+          , _transitionCenter.X + halfWidth
           , _transitionCenter.Y);
       }
       else
       {
         img.DrawLine(curentPen
           , _transitionCenter.X
-          , _transitionCenter.Y - widthDiff
+          , _transitionCenter.Y - halfWidth
           , _transitionCenter.X
-          , _transitionCenter.Y + widthDiff);
+          , _transitionCenter.Y + halfWidth);
       }
 
-      if (_edgeList.Any())
-      {
-        int edgeDiff = _transitionWidth / _edgeList.Count;
-        foreach (Edge edge in _edgeList)
+      
+      if (_startVertices.Any())
+      { // Draw Start Vertex
+        int edgeStep = _transitionWidth / _startVertices.Count;
+        for (int i = 0; i < _startVertices.Count; i++)
         {
           if (!this.isVertical)
           {
-            // Draw Start Vertex
-            if (isStartVertexBelowTransition(edge.startVertex))
-            {
-              if (!isVertical)
-              {
-                Point start = new Point(edge.startVertex.vertexCenter.X, edge.startVertex.vertexCenter.Y);
+            Vector2 norm = Vector2.Normalize(new Vector2((_transitionCenter.X - halfWidth + i * edgeStep) - (_startVertices[i].vertexCenter.X)
+              , (_transitionCenter.Y) - (_startVertices[i].vertexCenter.Y)));
+            // для конца линии умножаем на отрицательный скаляр - получаем вектор в обратном направлении
+            Vector2 v2 = Vector2.Multiply(20, norm);
 
-                int diff = (_transitionCenter.X - edge.startVertex.vertexCenter.X) / 2;
-                Point checkpoint1 = new Point(edge.startVertex.vertexCenter.X + diff, _transitionCenter.Y + diff);
-                Point checkpoint2 = new Point(_transitionCenter.X - widthDiff + edgeDiff, _transitionCenter.Y - _curveHeight);
-
-                Point end = new Point(_transitionCenter.X - widthDiff + edgeDiff, _transitionCenter.Y);
-
-                img.DrawBezier(_edgePen
-                  , start
-                  , checkpoint1
-                  , checkpoint2
-                  , end);
-              }
-              //else
-              //{
-
-              //}
-            }
-            else
-            {
-              if (!this.isVertical)
-              {
-                img.DrawLine(_edgePen
-                  , edge.startVertex.vertexCenter.X
-                  , edge.startVertex.vertexCenter.Y
-                  , _transitionCenter.X - widthDiff + edgeDiff
-                  , _transitionCenter.Y);
-              }
-              else
-              {
-                img.DrawLine(_edgePen
-                  , edge.startVertex.vertexCenter.X
-                  , edge.startVertex.vertexCenter.Y
-                  , _transitionCenter.X
-                  , _transitionCenter.Y - widthDiff + edgeDiff);
-              }
-            }
-
-            // Draw End Vertex
-            if (isEndVertexUpperTransition(edge.startVertex))
-            {
-              if (!isVertical)
-              {
-                Point start = new Point(_transitionCenter.X - widthDiff + edgeDiff, _transitionCenter.Y);
-
-                int diff = (_transitionCenter.Y - edge.endVertex.vertexCenter.Y) / 2;
-                Point checkpoint1 = new Point(_transitionCenter.X - widthDiff + edgeDiff, _transitionCenter.Y + _curveHeight);
-                Point checkpoint2;
-                if (_transitionCenter.X - widthDiff + edgeDiff < _transitionCenter.X)
-                {
-                  checkpoint2 = new Point(_transitionCenter.X - diff, _transitionCenter.Y - diff);
-                }
-                else
-                {
-                  checkpoint2 = new Point(_transitionCenter.X + diff, _transitionCenter.Y - diff);
-                }
-
-                Point end = new Point(_transitionCenter.X - widthDiff + edgeDiff, _transitionCenter.Y);
-
-                img.DrawBezier(_edgePen
-                  , start
-                  , checkpoint1
-                  , checkpoint2
-                  , end);
-              }
-              //else
-              //{
-
-              //}
-            }
-            else
-            {
-              if (!this.isVertical)
-              {
-                img.DrawLine(_edgePen
-                   , _transitionCenter.X - widthDiff + edgeDiff
-                   , _transitionCenter.Y
-                   , edge.endVertex.vertexCenter.X
-                   , edge.endVertex.vertexCenter.Y);
-              }
-              else
-              {
-                img.DrawLine(_edgePen
-                   , _transitionCenter.X
-                   , _transitionCenter.Y - widthDiff + edgeDiff
-                   , edge.endVertex.vertexCenter.X
-                   , edge.endVertex.vertexCenter.Y);
-              }
-            }
-          }
-        }
-      }
-
-      if (_edgeList.Any())
-      {
-        int edgeDiff = _transitionWidth / _edgeList.Count;
-        foreach (Edge edge in _edgeList)
-        {
-          if (!this.isVertical)
-          {
             img.DrawLine(_edgePen
-              , edge.startVertex.vertexCenter.X
-              , edge.startVertex.vertexCenter.Y
-              , _transitionCenter.X - widthDiff + edgeDiff
+              , _startVertices[i].vertexCenter.X + v2.X
+              , _startVertices[i].vertexCenter.Y + v2.Y
+              , _transitionCenter.X - halfWidth + i * edgeStep
               , _transitionCenter.Y);
           }
           else
           {
-            img.DrawLine(_edgePen
-              , edge.startVertex.vertexCenter.X
-              , edge.startVertex.vertexCenter.Y
-              , _transitionCenter.X
-              , _transitionCenter.Y - widthDiff + edgeDiff);
-          }
+            Vector2 norm = Vector2.Normalize(new Vector2((_transitionCenter.X) - (_startVertices[i].vertexCenter.X)
+              , (_transitionCenter.Y - halfWidth + i * edgeStep) - (_startVertices[i].vertexCenter.Y)));
+            // для конца линии умножаем на отрицательный скаляр - получаем вектор в обратном направлении
+            Vector2 v2 = Vector2.Multiply(20, norm);
 
+            img.DrawLine(_edgePen
+              , _startVertices[i].vertexCenter.X + v2.X
+              , _startVertices[i].vertexCenter.Y + v2.Y
+              , _transitionCenter.X
+              , _transitionCenter.Y - halfWidth + i * edgeStep);
+          }
+        }
+      }
+
+      
+      if (_endVertices.Any())
+      { // Draw End Vertex
+        int edgeDiff = _transitionWidth / _startVertices.Count;
+        
+        foreach (Vertex endVertex in _endVertices)
+        {
           if (!this.isVertical)
           {
+            Vector2 norm = Vector2.Normalize(new Vector2(endVertex.vertexCenter.X - _transitionCenter.X - halfWidth + edgeDiff
+              , endVertex.vertexCenter.Y - _transitionCenter.Y));
+            // для конца линии умножаем на отрицательный скаляр - получаем вектор в обратном направлении
+            Vector2 v2 = Vector2.Multiply(-20, norm);
+
             img.DrawLine(_edgePen
-               , _transitionCenter.X - widthDiff + edgeDiff
+               , _transitionCenter.X - halfWidth + edgeDiff
                , _transitionCenter.Y
-               , edge.endVertex.vertexCenter.X
-               , edge.endVertex.vertexCenter.Y);
+               , endVertex.vertexCenter.X + v2.X
+               , endVertex.vertexCenter.Y + v2.Y);
           }
           else
           {
+            Vector2 norm = Vector2.Normalize(new Vector2(endVertex.vertexCenter.X - _transitionCenter.X
+              , endVertex.vertexCenter.Y - _transitionCenter.Y - halfWidth + edgeDiff));
+            // для конца линии умножаем на отрицательный скаляр - получаем вектор в обратном направлении
+            Vector2 v2 = Vector2.Multiply(-20, norm);
+
             img.DrawLine(_edgePen
                , _transitionCenter.X
-               , _transitionCenter.Y - widthDiff + edgeDiff
-               , edge.endVertex.vertexCenter.X
-               , edge.endVertex.vertexCenter.Y);
+               , _transitionCenter.Y - halfWidth + edgeDiff
+               , endVertex.vertexCenter.X + v2.X
+               , endVertex.vertexCenter.Y + v2.Y);
+
           }
           edgeDiff += edgeDiff;
         }
       }
-
-      //if (_startVertices.Any())
-      //{
-      //  int edgeDiff = _transitionWidth / _startVertices.Count;
-      //  foreach (Vertex startVertex in _startVertices)
-      //  {
-      //    if (!this.isVertical)
-      //    {
-      //      img.DrawLine(_edgePen
-      //        , startVertex.vertexCenter.X
-      //        , startVertex.vertexCenter.Y
-      //        , _transitionCenter.X - widthDiff + edgeDiff
-      //        , _transitionCenter.Y);
-      //    }
-      //    else
-      //    {
-      //      img.DrawLine(_edgePen
-      //        , startVertex.vertexCenter.X
-      //        , startVertex.vertexCenter.Y
-      //        , _transitionCenter.X
-      //        , _transitionCenter.Y - widthDiff + edgeDiff);
-      //    }
-
-      //    edgeDiff += edgeDiff;
-      //  }
-      //}
-
-      //if (_endVertices.Any())
-      //{
-      //  int edgeDiff = _transitionWidth / _startVertices.Count;
-      //  foreach (Vertex endVertex in _endVertices)
-      //  {
-      //    if (!this.isVertical)
-      //    {
-      //      img.DrawLine(_edgePen
-      //         , _transitionCenter.X - widthDiff + edgeDiff
-      //         , _transitionCenter.Y
-      //         , endVertex.vertexCenter.X
-      //         , endVertex.vertexCenter.Y);
-      //    }
-      //    else
-      //    {
-      //      img.DrawLine(_edgePen
-      //         , _transitionCenter.X
-      //         , _transitionCenter.Y - widthDiff + edgeDiff
-      //         , endVertex.vertexCenter.X
-      //         , endVertex.vertexCenter.Y);
-      //    }
-      //    edgeDiff += edgeDiff;
-      //  }
-      //}
     }
 
     public bool isPointInside(Point p)
@@ -356,16 +216,16 @@ namespace TVP_KR
       
     }
 
-  //private bool isTransitionPossible()
-  //  {
-  //    foreach (Vertex startVertex in this._startVertices)
-  //    {
-  //      if (startVertex.positionsCount == 0)
-  //      {
-  //        return false;
-  //      }
-  //    }
-  //    return true;
-  //  }
+    private bool isTransitionPossible()
+    {
+      foreach (Vertex startVertex in this._startVertices)
+      {
+        if (startVertex.positionsCount == 0)
+        {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 }

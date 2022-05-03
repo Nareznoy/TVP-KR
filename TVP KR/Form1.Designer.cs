@@ -40,6 +40,10 @@
       this.btnAddEdge = new System.Windows.Forms.Button();
       this.btnCreatePTNet = new System.Windows.Forms.Button();
       this.lblTransitionInfo = new System.Windows.Forms.Label();
+      this.btnClear = new System.Windows.Forms.Button();
+      this.btnSimulate = new System.Windows.Forms.Button();
+      this.btnRemoveTransition = new System.Windows.Forms.Button();
+      this.btnDoStep = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPetriNet)).BeginInit();
       this.SuspendLayout();
       // 
@@ -108,7 +112,7 @@
       // 
       // btnAddPosition
       // 
-      this.btnAddPosition.Location = new System.Drawing.Point(869, 121);
+      this.btnAddPosition.Location = new System.Drawing.Point(869, 152);
       this.btnAddPosition.Name = "btnAddPosition";
       this.btnAddPosition.Size = new System.Drawing.Size(111, 23);
       this.btnAddPosition.TabIndex = 6;
@@ -118,7 +122,7 @@
       // 
       // btnRemovePosition
       // 
-      this.btnRemovePosition.Location = new System.Drawing.Point(869, 150);
+      this.btnRemovePosition.Location = new System.Drawing.Point(869, 181);
       this.btnRemovePosition.Name = "btnRemovePosition";
       this.btnRemovePosition.Size = new System.Drawing.Size(111, 23);
       this.btnRemovePosition.TabIndex = 7;
@@ -138,7 +142,7 @@
       // 
       // btnAddEdge
       // 
-      this.btnAddEdge.Location = new System.Drawing.Point(869, 179);
+      this.btnAddEdge.Location = new System.Drawing.Point(869, 210);
       this.btnAddEdge.Name = "btnAddEdge";
       this.btnAddEdge.Size = new System.Drawing.Size(111, 23);
       this.btnAddEdge.TabIndex = 9;
@@ -148,7 +152,7 @@
       // 
       // btnCreatePTNet
       // 
-      this.btnCreatePTNet.Location = new System.Drawing.Point(869, 230);
+      this.btnCreatePTNet.Location = new System.Drawing.Point(869, 261);
       this.btnCreatePTNet.Name = "btnCreatePTNet";
       this.btnCreatePTNet.Size = new System.Drawing.Size(111, 23);
       this.btnCreatePTNet.TabIndex = 10;
@@ -159,16 +163,60 @@
       // lblTransitionInfo
       // 
       this.lblTransitionInfo.AutoSize = true;
-      this.lblTransitionInfo.Location = new System.Drawing.Point(986, 235);
+      this.lblTransitionInfo.Location = new System.Drawing.Point(986, 266);
       this.lblTransitionInfo.Name = "lblTransitionInfo";
       this.lblTransitionInfo.Size = new System.Drawing.Size(0, 13);
       this.lblTransitionInfo.TabIndex = 11;
+      // 
+      // btnClear
+      // 
+      this.btnClear.Location = new System.Drawing.Point(949, 390);
+      this.btnClear.Name = "btnClear";
+      this.btnClear.Size = new System.Drawing.Size(75, 23);
+      this.btnClear.TabIndex = 12;
+      this.btnClear.Text = "Clear";
+      this.btnClear.UseVisualStyleBackColor = true;
+      this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+      // 
+      // btnSimulate
+      // 
+      this.btnSimulate.Location = new System.Drawing.Point(890, 462);
+      this.btnSimulate.Name = "btnSimulate";
+      this.btnSimulate.Size = new System.Drawing.Size(75, 23);
+      this.btnSimulate.TabIndex = 13;
+      this.btnSimulate.Text = "Simulate";
+      this.btnSimulate.UseVisualStyleBackColor = true;
+      this.btnSimulate.Click += new System.EventHandler(this.btnSimulate_Click);
+      // 
+      // btnRemoveTransition
+      // 
+      this.btnRemoveTransition.Location = new System.Drawing.Point(869, 109);
+      this.btnRemoveTransition.Name = "btnRemoveTransition";
+      this.btnRemoveTransition.Size = new System.Drawing.Size(111, 23);
+      this.btnRemoveTransition.TabIndex = 14;
+      this.btnRemoveTransition.Text = "Remove Transition";
+      this.btnRemoveTransition.UseVisualStyleBackColor = true;
+      this.btnRemoveTransition.Click += new System.EventHandler(this.btnRemoveTransition_Click);
+      // 
+      // btnDoStep
+      // 
+      this.btnDoStep.Location = new System.Drawing.Point(890, 491);
+      this.btnDoStep.Name = "btnDoStep";
+      this.btnDoStep.Size = new System.Drawing.Size(75, 23);
+      this.btnDoStep.TabIndex = 15;
+      this.btnDoStep.Text = "Do Step";
+      this.btnDoStep.UseVisualStyleBackColor = true;
+      this.btnDoStep.Click += new System.EventHandler(this.btnDoStep_Click);
       // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1112, 591);
+      this.Controls.Add(this.btnDoStep);
+      this.Controls.Add(this.btnRemoveTransition);
+      this.Controls.Add(this.btnSimulate);
+      this.Controls.Add(this.btnClear);
       this.Controls.Add(this.lblTransitionInfo);
       this.Controls.Add(this.btnCreatePTNet);
       this.Controls.Add(this.btnAddEdge);
@@ -203,6 +251,10 @@
     private System.Windows.Forms.Button btnAddEdge;
     private System.Windows.Forms.Button btnCreatePTNet;
     private System.Windows.Forms.Label lblTransitionInfo;
+    private System.Windows.Forms.Button btnClear;
+    private System.Windows.Forms.Button btnSimulate;
+    private System.Windows.Forms.Button btnRemoveTransition;
+    private System.Windows.Forms.Button btnDoStep;
   }
 }
 
