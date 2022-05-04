@@ -35,7 +35,6 @@
       this.radBtnVertical = new System.Windows.Forms.RadioButton();
       this.radBtnHorizontal = new System.Windows.Forms.RadioButton();
       this.btnAddPosition = new System.Windows.Forms.Button();
-      this.btnRemovePosition = new System.Windows.Forms.Button();
       this.button2 = new System.Windows.Forms.Button();
       this.btnAddEdge = new System.Windows.Forms.Button();
       this.lblTransitionInfo = new System.Windows.Forms.Label();
@@ -45,6 +44,7 @@
       this.btnDoStep = new System.Windows.Forms.Button();
       this.btnExport = new System.Windows.Forms.Button();
       this.btnImport = new System.Windows.Forms.Button();
+      this.btnRemovePosition = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPetriNet)).BeginInit();
       this.SuspendLayout();
       // 
@@ -60,7 +60,7 @@
       // 
       // btnAddVertex
       // 
-      this.btnAddVertex.Location = new System.Drawing.Point(869, 12);
+      this.btnAddVertex.Location = new System.Drawing.Point(1025, 12);
       this.btnAddVertex.Name = "btnAddVertex";
       this.btnAddVertex.Size = new System.Drawing.Size(111, 23);
       this.btnAddVertex.TabIndex = 1;
@@ -70,7 +70,7 @@
       // 
       // btnRemoveVertex
       // 
-      this.btnRemoveVertex.Location = new System.Drawing.Point(869, 41);
+      this.btnRemoveVertex.Location = new System.Drawing.Point(1025, 41);
       this.btnRemoveVertex.Name = "btnRemoveVertex";
       this.btnRemoveVertex.Size = new System.Drawing.Size(111, 23);
       this.btnRemoveVertex.TabIndex = 2;
@@ -80,7 +80,7 @@
       // 
       // btnAddTransition
       // 
-      this.btnAddTransition.Location = new System.Drawing.Point(869, 80);
+      this.btnAddTransition.Location = new System.Drawing.Point(1025, 80);
       this.btnAddTransition.Name = "btnAddTransition";
       this.btnAddTransition.Size = new System.Drawing.Size(111, 23);
       this.btnAddTransition.TabIndex = 3;
@@ -91,7 +91,7 @@
       // radBtnVertical
       // 
       this.radBtnVertical.AutoSize = true;
-      this.radBtnVertical.Location = new System.Drawing.Point(981, 93);
+      this.radBtnVertical.Location = new System.Drawing.Point(1137, 93);
       this.radBtnVertical.Name = "radBtnVertical";
       this.radBtnVertical.Size = new System.Drawing.Size(60, 17);
       this.radBtnVertical.TabIndex = 4;
@@ -102,7 +102,7 @@
       // 
       this.radBtnHorizontal.AutoSize = true;
       this.radBtnHorizontal.Checked = true;
-      this.radBtnHorizontal.Location = new System.Drawing.Point(981, 70);
+      this.radBtnHorizontal.Location = new System.Drawing.Point(1137, 70);
       this.radBtnHorizontal.Name = "radBtnHorizontal";
       this.radBtnHorizontal.Size = new System.Drawing.Size(72, 17);
       this.radBtnHorizontal.TabIndex = 5;
@@ -113,37 +113,27 @@
       // 
       // btnAddPosition
       // 
-      this.btnAddPosition.Location = new System.Drawing.Point(869, 152);
+      this.btnAddPosition.Location = new System.Drawing.Point(869, 12);
       this.btnAddPosition.Name = "btnAddPosition";
-      this.btnAddPosition.Size = new System.Drawing.Size(111, 23);
+      this.btnAddPosition.Size = new System.Drawing.Size(134, 52);
       this.btnAddPosition.TabIndex = 6;
-      this.btnAddPosition.Text = "Add Position";
+      this.btnAddPosition.Text = "Добавить позицию";
       this.btnAddPosition.UseVisualStyleBackColor = true;
       this.btnAddPosition.Click += new System.EventHandler(this.btnAddPosition_Click);
       // 
-      // btnRemovePosition
-      // 
-      this.btnRemovePosition.Location = new System.Drawing.Point(869, 181);
-      this.btnRemovePosition.Name = "btnRemovePosition";
-      this.btnRemovePosition.Size = new System.Drawing.Size(111, 23);
-      this.btnRemovePosition.TabIndex = 7;
-      this.btnRemovePosition.Text = "Remove Position";
-      this.btnRemovePosition.UseVisualStyleBackColor = true;
-      this.btnRemovePosition.Click += new System.EventHandler(this.btnRemovePosition_Click);
-      // 
       // button2
       // 
-      this.button2.Location = new System.Drawing.Point(869, 256);
+      this.button2.Location = new System.Drawing.Point(869, 70);
       this.button2.Name = "button2";
-      this.button2.Size = new System.Drawing.Size(111, 23);
+      this.button2.Size = new System.Drawing.Size(134, 52);
       this.button2.TabIndex = 8;
-      this.button2.Text = "Reachability Graph";
+      this.button2.Text = "Граф достижимости";
       this.button2.UseVisualStyleBackColor = true;
       this.button2.Click += new System.EventHandler(this.button2_Click);
       // 
       // btnAddEdge
       // 
-      this.btnAddEdge.Location = new System.Drawing.Point(869, 210);
+      this.btnAddEdge.Location = new System.Drawing.Point(1025, 211);
       this.btnAddEdge.Name = "btnAddEdge";
       this.btnAddEdge.Size = new System.Drawing.Size(111, 23);
       this.btnAddEdge.TabIndex = 9;
@@ -161,7 +151,7 @@
       // 
       // btnClear
       // 
-      this.btnClear.Location = new System.Drawing.Point(869, 556);
+      this.btnClear.Location = new System.Drawing.Point(1025, 269);
       this.btnClear.Name = "btnClear";
       this.btnClear.Size = new System.Drawing.Size(111, 23);
       this.btnClear.TabIndex = 12;
@@ -171,17 +161,18 @@
       // 
       // btnSimulate
       // 
-      this.btnSimulate.Location = new System.Drawing.Point(869, 303);
+      this.btnSimulate.BackColor = System.Drawing.Color.LightGreen;
+      this.btnSimulate.Location = new System.Drawing.Point(869, 135);
       this.btnSimulate.Name = "btnSimulate";
-      this.btnSimulate.Size = new System.Drawing.Size(111, 23);
+      this.btnSimulate.Size = new System.Drawing.Size(134, 52);
       this.btnSimulate.TabIndex = 13;
-      this.btnSimulate.Text = "Simulate";
-      this.btnSimulate.UseVisualStyleBackColor = true;
+      this.btnSimulate.Text = "Старт";
+      this.btnSimulate.UseVisualStyleBackColor = false;
       this.btnSimulate.Click += new System.EventHandler(this.btnSimulate_Click);
       // 
       // btnRemoveTransition
       // 
-      this.btnRemoveTransition.Location = new System.Drawing.Point(869, 109);
+      this.btnRemoveTransition.Location = new System.Drawing.Point(1025, 109);
       this.btnRemoveTransition.Name = "btnRemoveTransition";
       this.btnRemoveTransition.Size = new System.Drawing.Size(111, 23);
       this.btnRemoveTransition.TabIndex = 14;
@@ -191,17 +182,18 @@
       // 
       // btnDoStep
       // 
-      this.btnDoStep.Location = new System.Drawing.Point(869, 332);
+      this.btnDoStep.BackColor = System.Drawing.Color.PaleGoldenrod;
+      this.btnDoStep.Location = new System.Drawing.Point(869, 193);
       this.btnDoStep.Name = "btnDoStep";
-      this.btnDoStep.Size = new System.Drawing.Size(111, 23);
+      this.btnDoStep.Size = new System.Drawing.Size(134, 52);
       this.btnDoStep.TabIndex = 15;
-      this.btnDoStep.Text = "Do Step";
-      this.btnDoStep.UseVisualStyleBackColor = true;
+      this.btnDoStep.Text = "Шаг";
+      this.btnDoStep.UseVisualStyleBackColor = false;
       this.btnDoStep.Click += new System.EventHandler(this.btnDoStep_Click);
       // 
       // btnExport
       // 
-      this.btnExport.Location = new System.Drawing.Point(869, 432);
+      this.btnExport.Location = new System.Drawing.Point(1025, 240);
       this.btnExport.Name = "btnExport";
       this.btnExport.Size = new System.Drawing.Size(75, 23);
       this.btnExport.TabIndex = 16;
@@ -211,7 +203,7 @@
       // 
       // btnImport
       // 
-      this.btnImport.Location = new System.Drawing.Point(950, 432);
+      this.btnImport.Location = new System.Drawing.Point(1106, 240);
       this.btnImport.Name = "btnImport";
       this.btnImport.Size = new System.Drawing.Size(75, 23);
       this.btnImport.TabIndex = 17;
@@ -219,11 +211,21 @@
       this.btnImport.UseVisualStyleBackColor = true;
       this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
       // 
+      // btnRemovePosition
+      // 
+      this.btnRemovePosition.Location = new System.Drawing.Point(1025, 182);
+      this.btnRemovePosition.Name = "btnRemovePosition";
+      this.btnRemovePosition.Size = new System.Drawing.Size(111, 23);
+      this.btnRemovePosition.TabIndex = 7;
+      this.btnRemovePosition.Text = "Remove Position";
+      this.btnRemovePosition.UseVisualStyleBackColor = true;
+      this.btnRemovePosition.Click += new System.EventHandler(this.btnRemovePosition_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1058, 690);
+      this.ClientSize = new System.Drawing.Size(1221, 690);
       this.Controls.Add(this.btnImport);
       this.Controls.Add(this.btnExport);
       this.Controls.Add(this.btnDoStep);
@@ -258,7 +260,6 @@
     private System.Windows.Forms.RadioButton radBtnVertical;
     private System.Windows.Forms.RadioButton radBtnHorizontal;
     private System.Windows.Forms.Button btnAddPosition;
-    private System.Windows.Forms.Button btnRemovePosition;
     private System.Windows.Forms.Button button2;
     private System.Windows.Forms.Button btnAddEdge;
     private System.Windows.Forms.Label lblTransitionInfo;
@@ -268,6 +269,7 @@
     private System.Windows.Forms.Button btnDoStep;
     private System.Windows.Forms.Button btnExport;
     private System.Windows.Forms.Button btnImport;
+    private System.Windows.Forms.Button btnRemovePosition;
   }
 }
 
