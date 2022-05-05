@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Graphviz, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Graphviz.2.38.0.2\lib\Graphviz.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -58,6 +55,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphicsExtensions.cs" />
+    <Compile Include="GraphViz.cs" />
     <Compile Include="PetriNet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +73,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="external\config6" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +87,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="external\cdt.dll" />
+    <Content Include="external\cgraph.dll" />
+    <Content Include="external\dot.exe" />
+    <Content Include="external\freetype6.dll" />
+    <Content Include="external\gvc.dll" />
+    <Content Include="external\gvplugin_core.dll" />
+    <Content Include="external\gvplugin_dot_layout.dll" />
+    <Content Include="external\gvplugin_gd.dll" />
+    <Content Include="external\gvplugin_gdiplus.dll" />
+    <Content Include="external\iconv.dll" />
+    <Content Include="external\intl.dll" />
+    <Content Include="external\jpeg62.dll" />
+    <Content Include="external\libcairo-2.dll" />
+    <Content Include="external\libexpat-1.dll" />
+    <Content Include="external\libexpat.dll" />
+    <Content Include="external\libfontconfig-1.dll" />
+    <Content Include="external\libfreetype-6.dll" />
+    <Content Include="external\libglib-2.0-0.dll" />
+    <Content Include="external\libgmodule-2.0-0.dll" />
+    <Content Include="external\libgobject-2.0-0.dll" />
+    <Content Include="external\libgthread-2.0-0.dll" />
+    <Content Include="external\libpng12.dll" />
+    <Content Include="external\libpng14-14.dll" />
+    <Content Include="external\libxml2.dll" />
+    <Content Include="external\ltdl.dll" />
+    <Content Include="external\Pathplan.dll" />
+    <Content Include="external\Source.txt" />
+    <Content Include="external\zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

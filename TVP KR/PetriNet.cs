@@ -16,10 +16,37 @@ namespace TVP_KR
 
     private int _currentActiveTransitionIndex = 1;
 
+    public PetriNet(PetriNet petriNet)
+    {
+      this.vertices = new List<Vertex>();
+      this.transitions = new List<Transition>();
+
+      foreach (Vertex vertex in petriNet.vertices)
+      {
+        this.vertices.Add(new Vertex(vertex));
+      }
+      foreach (Transition transition in petriNet.transitions)
+      {
+        this.transitions.Add(new Transition(transition));
+      }
+
+      this._currentActiveTransitionIndex = petriNet._currentActiveTransitionIndex;
+    }
+
     public PetriNet()
     {
       this.vertices = new List<Vertex>();
       this.transitions = new List<Transition>();
+    }
+
+    public PetriNet(string netState)
+    {
+      String[] strArray = netState.Split(',');
+      int[] intArray = new int[strArray.Length];
+      for (int i = 0; i < strArray.Length; i++)
+      {
+        intArray[i] = Int32.Parse(strArray[i]);
+      }
     }
 
     public PetriNet(List<Vertex> vertices, List<Transition> transitions)
@@ -93,6 +120,11 @@ namespace TVP_KR
       }
     }
 
+    public bool doTransitionByIndex(int transitionIndex)
+    {
+      return transitions[transitionIndex].tryDoTransition();
+    }
+
     public int doStep()
     {
       transitions[_currentActiveTransitionIndex].tryDoTransition();
@@ -110,6 +142,17 @@ namespace TVP_KR
       }
 
       return doTransitionIndex;
+    }
+
+    public override string ToString()
+    {
+      List<String> vertexStates = new List<String>();
+      foreach (Vertex vertex in vertices)
+      {
+        vertexStates.Add(vertex.positionsCount.ToString());
+      }
+
+      return String.Join(",", vertexStates);
     }
   }
 }

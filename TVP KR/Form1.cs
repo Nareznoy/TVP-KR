@@ -27,13 +27,16 @@ namespace TVP_KR
 
   public partial class Form1 : Form
   {
-    private const String SERIALIZIBLE_FILE_NAME = "DrozdovGraph.dat";
+    List<Tuple<String, String, String>> graphVizVerticesByVerticesByTransIndex = new List<Tuple<string, string, string>>();
+
+    private const String SERIALIZIBLE_FILE_NAME = "SeverinGraph.dat";
 
     private DrawMode currentDrawMode = DrawMode.None;
     private bool _isVerticalTransition = false;
 
     Graphics img;
     private int _vertexCount = 0;
+    private int _transitionCount = 0;
 
     //private List<Vertex> _vertices = new List<Vertex>();
     //private List<Transition> _transitions = new List<Transition>();
@@ -154,7 +157,59 @@ namespace TVP_KR
 
     private void button2_Click(object sender, EventArgs e)
     {
+      Stack<PetriNet> stack = new Stack<PetriNet>();
+      stack.Push(ptNet);
 
+      int i = 0;
+      while (i < 4)
+      {
+        PetriNet petriNet = new PetriNet(stack.Pop());
+        List<int> possibleTransitionsIndexes = new List<int>();
+
+        for (int j = 0; j < petriNet.transitions.Count; j++)
+        {
+          if (petriNet.transitions[j].isTransitionPossible())
+          {
+            possibleTransitionsIndexes.Add(j);
+          }
+        }
+
+        foreach (int possibleTransitionIndex in possibleTransitionsIndexes)
+        {
+          PetriNet tempPT = new PetriNet(petriNet);
+          tempPT.doTransitionByIndex(possibleTransitionIndex);
+          graphVizVerticesByVerticesByTransIndex.Add(new Tuple<string, string, string>(petriNet.ToString(), tempPT.ToString(), possibleTransitionIndex.ToString()));
+          stack.Push(tempPT);
+        }
+
+        i++;
+      }
+
+      String format = @"{0}->{1}[label=""{2}""];";
+      StringBuilder ReacheabilityGraphString = new StringBuilder();
+      foreach (Tuple<String, String, String> transitionInfo in graphVizVerticesByVerticesByTransIndex)
+      {
+        ReacheabilityGraphString.Append(String.Format(format
+          , transitionInfo.Item1
+          , transitionInfo.Item2
+          , transitionInfo.Item3));
+      }
+
+      ReacheabilityGraphString.Append('}');
+
+      String GraphVizPrefixString = @"digraph g {ratio = fill; node[style = filled] label = ""Andre van Dun "";";
+      //String ReacheabilityGraphString = @"
+      //      InitialInitial->AwaitingAnalysis[label =""manual""];
+      //      AwaitingAnalysis->AwaitingDevelopment[label =""manual""];
+      //      AwaitingDevelopment->InDevelopment[label =""manual""];
+      //      AwaitingDevelopment->AwaitingDelivery[label =""manual""];
+      //      InDevelopment->AwaitingDelivery[label =""manual""];}";
+
+      String GraphVizBuildString = GraphVizPrefixString + ReacheabilityGraphString.ToString();
+
+
+
+      pictureBoxPetriNet.Image = GraphVizDraw.Graphviz.RenderImage(GraphVizBuildString, "jpg");
     }
 
     private void pictureBoxPetriNet_MouseClick(object sender, MouseEventArgs e)
@@ -174,7 +229,7 @@ namespace TVP_KR
           ptNet.drawPetriNet(img);
           break;
         case DrawMode.AddTransition:
-          Transition newTransition = new Transition(e.Location);
+          Transition newTransition = new Transition(e.Location, ++_transitionCount);
           //_transitions.Add(newTransition);
           newTransition.isVertical = _isVerticalTransition;
           //newTransition.drawTransition(img);
@@ -291,7 +346,14 @@ namespace TVP_KR
 
     private void btnDoStep_Click(object sender, EventArgs e)
     {
+      String oldNetState = ptNet.ToString();
       int acitveTransition = ptNet.doStep();
+      String newNetState = ptNet.ToString();
+
+      
+
+      graphVizVerticesByVerticesByTransIndex.Add(new Tuple<string, string, string>(oldNetState, newNetState, acitveTransition.ToString()));
+
       reDrawPTNet();
       ptNet.transitions[acitveTransition].drawTransition(img, true);
     }

@@ -20,8 +20,29 @@ namespace TVP_KR
     public Point transitionCenter { get; set; } = new Point();
     public bool isVertical { get; set; } = false;
     public bool isActive { get; set; } = false;
+    public int transitionIndex { get; set; }
 
-    public Transition(Point transitionCenter)
+    public Transition(Transition transition)
+    {
+      this.transitionCenter = transition.transitionCenter;
+      this.isVertical = transition.isVertical;
+      this.isActive = transition.isActive;
+      this.transitionIndex = transition.transitionIndex;
+      
+      this._startVertices = new List<Vertex>();
+      foreach (Vertex startVertex in transition._startVertices)
+      {
+        this._startVertices.Add(new Vertex(startVertex));
+      }
+
+      this._endVertices = new List<Vertex>();
+      foreach (Vertex endVertex in transition._endVertices)
+      {
+        this._endVertices.Add(new Vertex(endVertex));
+      }
+    }
+
+    public Transition(Point transitionCenter, int transitionIndex)
     {
       this.transitionCenter = transitionCenter;
     }
@@ -216,7 +237,7 @@ namespace TVP_KR
       
     }
 
-    private bool isTransitionPossible()
+    public bool isTransitionPossible()
     {
       foreach (Vertex startVertex in this._startVertices)
       {

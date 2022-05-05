@@ -21,6 +21,13 @@ namespace TVP_KR
     public Point vertexCenter { get; } = new Point();
     public int positionsCount { get; set; } = 0;
 
+    public Vertex (Vertex vertex)
+    {
+      this._name = vertex._name;
+      this.vertexCenter = vertex.vertexCenter;
+      this.positionsCount = vertex.positionsCount;
+    }
+
     public Vertex(Point vertexCenter, int index)
     {
       this.vertexCenter = vertexCenter;
